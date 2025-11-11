@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Propelle.InterviewChallenge", "Propelle.InterviewChallenge\Propelle.InterviewChallenge.csproj", "{2DC7FEEF-8B85-4BBE-BCAB-174BB48E6911}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Items", "Items", "{590226F7-A35C-46B0-877D-68F23988AF22}"
+	ProjectSection(SolutionItems) = preProject
+		..\.editorconfig = ..\.editorconfig
+		..\.gitignore = ..\.gitignore
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Propelle.InterviewChallenge.Tests", "Propelle.InterviewChallenge.Tests\Propelle.InterviewChallenge.Tests.csproj", "{7C069D7C-82F0-40E3-94C2-4E775C25677D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DC7FEEF-8B85-4BBE-BCAB-174BB48E6911}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DC7FEEF-8B85-4BBE-BCAB-174BB48E6911}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DC7FEEF-8B85-4BBE-BCAB-174BB48E6911}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DC7FEEF-8B85-4BBE-BCAB-174BB48E6911}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C069D7C-82F0-40E3-94C2-4E775C25677D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C069D7C-82F0-40E3-94C2-4E775C25677D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C069D7C-82F0-40E3-94C2-4E775C25677D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C069D7C-82F0-40E3-94C2-4E775C25677D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B5B1674-FD27-4F3C-8EE5-45470857F896}
+	EndGlobalSection
+EndGlobal
