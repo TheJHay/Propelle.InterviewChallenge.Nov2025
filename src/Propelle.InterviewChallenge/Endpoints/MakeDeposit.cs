@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Propelle.InterviewChallenge.Application;
 using Propelle.InterviewChallenge.Application.Domain;
 using Propelle.InterviewChallenge.Application.Domain.Events;
+using Propelle.InterviewChallenge.Infrastructure.Outbox;
 
 namespace Propelle.InterviewChallenge.Endpoints
 {
@@ -58,13 +59,13 @@ namespace Propelle.InterviewChallenge.Endpoints
                     return;
                 }
                 await _paymentsContext.Deposits.AddAsync(deposit, ct);
-                
-                await _paymentsContext.SaveChangesAsync(ct);
-
-                await _eventBus.Publish(new DepositMade
+                await _paymentsContext.Outbox.AddAsync(OutgoingMessage.Create(
+                    deposit.Id,
+                    new DepositMade
                 {
                     Id = deposit.Id
-                });
+                }));
+                await _paymentsContext.SaveChangesAsync(ct);
 
                 await SendAsync(new Response { DepositId = deposit.Id }, 201, ct);
             }
