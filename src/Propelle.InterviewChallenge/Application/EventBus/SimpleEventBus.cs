@@ -17,7 +17,7 @@ namespace Propelle.InterviewChallenge.Application.EventBus
             /* If you've found this, you're eagled-eyed! Let us know in your notes if you see this, and have a think about the ramifications of 
              * changing SimulatePotentialFailure() to have a higher than zero chance of throwing an exception (i.e. simulating a real event-bus being unavailable at times) */
             PointOfFailure.SimulatePotentialFailure(0);
-
+            // This one we would definitely want an outbox so we can transactionally publish / retry on failure.
             await _exchange.Publish(@event);
         }
     }

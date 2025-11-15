@@ -8,13 +8,16 @@
 
         public decimal Amount { get; }
 
-        public Deposit(Guid userId, decimal amount) : this(Guid.NewGuid(), userId, amount) { }
+        public DateTime CreatedAt { get; }
 
-        public Deposit(Guid id, Guid userId, decimal amount)
+        public Deposit(Guid userId, decimal amount) : this(Guid.NewGuid(), userId, amount, DateTime.UtcNow) { }
+
+        public Deposit(Guid id, Guid userId, decimal amount, DateTime createdAt)
         {
             Id = id;
             UserId = userId;
             Amount = amount;
+            CreatedAt = createdAt;
         }
     }
 }
