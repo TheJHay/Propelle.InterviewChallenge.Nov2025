@@ -34,6 +34,10 @@ namespace Propelle.InterviewChallenge.Tests
             using var scope = _factory.Services.CreateScope();
             var investrClient = scope.ServiceProvider.GetService<ISmartInvestClient>();
 
+            await Task.Delay(100); // My solution to the extension problem using a noddy outbox is eventually consistent.
+                                   // Added a brief delay here to allow for processing.
+                                   // Before the extension task, this wasn't required as messages were published and handled in the same execution context.
+
             var sentDeposits = investrClient.SubmittedDeposits
                 .Where(x => requests.Select(x => x.UserId).Contains(x.UserId))
                 .ToList();
@@ -59,7 +63,7 @@ namespace Propelle.InterviewChallenge.Tests
             // Assertions
             using var scope = _factory.Services.CreateScope();
             using var context = scope.ServiceProvider.GetService<PaymentsContext>();
-
+            
             var storedDeposits = await context.Deposits
                 .Where(x => requests.Select(x => x.UserId).Contains(x.UserId))
                 .ToListAsync();

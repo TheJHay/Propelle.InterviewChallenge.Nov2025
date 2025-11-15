@@ -1,7 +1,9 @@
 ﻿using FastEndpoints;
+using Microsoft.EntityFrameworkCore;
 using Propelle.InterviewChallenge.Application;
 using Propelle.InterviewChallenge.Application.Domain;
 using Propelle.InterviewChallenge.Application.Domain.Events;
+using Propelle.InterviewChallenge.Infrastructure.Outbox;
 
 namespace Propelle.InterviewChallenge.Endpoints
 {
@@ -40,14 +42,30 @@ namespace Propelle.InterviewChallenge.Endpoints
             public override async Task HandleAsync(Request req, CancellationToken ct)
             {
                 var deposit = new Deposit(req.UserId, req.Amount);
-                _paymentsContext.Deposits.Add(deposit);
 
-                await _paymentsContext.SaveChangesAsync(ct);
+                // Use a window to de-duplicate incoming bank deposits / make the retries idempotent
+                // It's not a great solution as we could have valid deposits which look like duplicates within the window.
+                // Either an appropriate window could be agreed with the business
+                // Or solutions such as in/outbox pattern and/or some breaking changes to the API such as using idempotency keys will help.
+                var duplicate = await _paymentsContext.Deposits.SingleOrDefaultAsync(x => 
+                    x.UserId == req.UserId 
+                    && x.Amount == req.Amount
+                    && x.CreatedAt > (DateTime.UtcNow.AddSeconds(-30)),
+                    ct);
 
-                await _eventBus.Publish(new DepositMade
+                if (duplicate is not null)
+                {
+                    await SendAsync(new Response { DepositId = duplicate.Id }, 201, ct);
+                    return;
+                }
+                await _paymentsContext.Deposits.AddAsync(deposit, ct);
+                await _paymentsContext.Outbox.AddAsync(OutgoingMessage.Create(
+                    deposit.Id,
+                    new DepositMade
                 {
                     Id = deposit.Id
-                });
+                }));
+                await _paymentsContext.SaveChangesAsync(ct);
 
                 await SendAsync(new Response { DepositId = deposit.Id }, 201, ct);
             }

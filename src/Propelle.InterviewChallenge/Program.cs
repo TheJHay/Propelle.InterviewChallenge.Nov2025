@@ -5,6 +5,7 @@ using Propelle.InterviewChallenge.Application.Domain.Events;
 using Propelle.InterviewChallenge.Application.EventBus;
 using Propelle.InterviewChallenge.Application.EventHandlers;
 using Propelle.InterviewChallenge.EventHandling;
+using Propelle.InterviewChallenge.Infrastructure.Outbox;
 
 namespace Propelle.InterviewChallenge
 {
@@ -21,6 +22,8 @@ namespace Propelle.InterviewChallenge
             builder.Services.AddSingleton<Application.EventBus.IEventBus, SimpleEventBus>();
             builder.Services.AddTransient<EventHandling.IEventHandler<DepositMade>, SubmitDeposit>();
             builder.Services.AddFastEndpoints();
+            builder.Services.AddSingleton<IOutboxMessageHandler<DepositMade>, OnDepositMade>();
+            builder.Services.AddHostedService<OutboxProcessor<DepositMade>>();
 
             var app = builder.Build();
 
